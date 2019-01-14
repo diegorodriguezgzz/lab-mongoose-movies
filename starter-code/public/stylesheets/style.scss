@@ -5,4 +5,28 @@ body {
 
 a {
   color: #00B7FF;
+  text-decoration: none;
+}
+
+.celeb-card, .movie-card {
+  width: 40vw;
+  height: 8vh;
+  margin: 1vh 0 1vh 5vw;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+  border: 2px solid #00B7FF;
+}
+
+.link-edit {
+  margin: auto 2vw;
+}
+
+.btn-delete {
+  margin: auto 1vw;
+  border: 2px solid #00B7FF;
+  border-radius: 3px;
+  background-color: white;
+  color: #00B7FF;
 }

@@ -36,6 +36,17 @@ router.get('/celebrities/:id', (req, res, next) => {
     });
 });
 
+router.get('/celebrities/:id/edit', (req, res, next) => {
+  Celebrity.findById(req.params.id)
+    .then(celebrity => {
+      res.render('celebrities/edit', { celebrity });
+    })
+    .catch(err => {
+      console.log(err);
+      next();
+    });
+});
+
 router.post('/celebrities', (req, res, next) => {
   const { name, occupation, catchPhrase } = req.body;
   Celebrity.create({ name, occupation, catchPhrase })
@@ -62,6 +73,22 @@ router.post('/celebrities/:id/delete', (req, res, next) => {
       console.log(err);
       next();
     });
+});
+
+router.post('/celebrities/:id/edit', (req, res, next) => {
+  const { name, occupation, catchPhrase } = req.body;
+  Celebrity.findByIdAndUpdate(req.params.id, {
+    $set: { //Update the document
+      name: name,
+      occupation: occupation,
+      catchPhrase: catchPhrase
+    }
+  })
+    .then(() => {
+      console.log("Celebrity updated");
+      res.redirect('/celebrities/');
+    })
+    .catch(err => console.log(err));
 });
 
 //Movies
@@ -93,19 +120,49 @@ router.post('/movies/add', (req, res, next) => {
 
 router.post('/movies/:id/delete', (req, res, next) => {
   Movie.findByIdAndDelete(req.params.id)
-  .then(() => {
-    console.log("Sucessfully deleted")
-  })
-  .catch(err => console.log(err));
+    .then(() => {
+      console.log("Sucessfully deleted")
+    })
+    .catch(err => console.log(err));
 
   Movie.find()
-  .then(movies => {
-    res.render('movies/index', {movies});
+    .then(movies => {
+      res.render('movies/index', { movies });
+    })
+    .catch(err => {
+      console.log(err);
+      next();
+    });
+})
+
+router.get('/movies/:id/edit', (req, res, next) => {
+  Movie.findById(req.params.id)
+    .then(movie => {
+      res.render('movies/edit', { movie });
+    })
+    .catch(err => {
+      console.log(err);
+      next();
+    });
+})
+
+router.post('/movies/:id/edit', (req, res, next) => {
+  const { title, genre, plot } = req.body
+  Movie.findByIdAndUpdate(req.params.id, {
+    $set: {
+      title: title,
+      genre: genre,
+      plot: plot
+    }
   })
-  .catch(err => {
-    console.log(err);
-    next();
-  });
+    .then(() => {
+      console.log("Movie updated");
+      res.redirect("/movies");
+    })
+    .catch(err => {
+      console.log(err);
+      next();
+    });
 })
 
 router.get('/movies/:id', (req, res, next) => {
